@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  spring_boot_app:
+    build: .
+    container_name: spring_boot_app_container
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+  
+  prometheus_app:
+    image: prom/prometheus
+    container_name: prometheus_app_container
+    links:
+      - spring_boot_app:SpringBootApp
+    volumes:
+      - "./src/main/resources/prometheus.yml:/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+    depends_on:
+      - spring_boot_app
+
+  
